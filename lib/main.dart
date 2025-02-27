@@ -90,6 +90,7 @@ class GeneratorPage extends StatelessWidget {
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
     var pair = appState.current;
+    String currentTitle = appState.currentTitle;
 
     IconData icon;
     if (appState.favorites.contains(pair)) {
@@ -102,6 +103,11 @@ class GeneratorPage extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          Text(currentTitle),
+          TextButton(
+            onPressed: () => appState.getPopularMovies(),
+            child: Text("Get Movie Title"),
+          ),
           BigCard(pair: pair),
           SizedBox(height: 10),
           Row(
