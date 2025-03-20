@@ -2,11 +2,25 @@ import 'dart:convert';
 
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 class MyAppState extends ChangeNotifier {
   var current = WordPair.random();
   String currentTitle = "Loading...";
+  late final String readAccessKey;
+
+  MyAppState() {
+    String? key = dotenv.env["TMDB_READ_ACCESS_KEY"];
+
+    if (key == null) {
+      throw Exception(
+        "No read access key found in app_state init, does .env exist?",
+      );
+    }
+
+    readAccessKey = key;
+  }
 
   void getNext() {
     current = WordPair.random();
@@ -31,8 +45,7 @@ class MyAppState extends ChangeNotifier {
     var response = await http.get(
       url,
       headers: {
-        "Authorization":
-            "Bearer ADD_THE_MOVIE_API_READ_ACCESS_TOKEN_FROM_MOODLE_HERE",
+        "Authorization": "Bearer $readAccessKey",
         "Accept": "application/json",
         "Content-Type": "application/json",
       },
