@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:go_router/go_router.dart';
 import 'package:moviematch/providers/app_state.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/cupertino.dart';
 
 Future<void> main() async {
   await dotenv.load(fileName: ".env");
@@ -61,51 +64,61 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    /*     Widget page;
-    switch (selectedIndex) {
-      case 0:
-        page = GeneratorPage();
-      case 1:
-        page = FavoritesPage();
-      default:
-        throw UnimplementedError('no widget for $selectedIndex');
+    if (Platform.isAndroid) {
+      return Scaffold(body: CustomNavigationRail(widget: widget));
     }
- */
+
+    if (Platform.isIOS) {
+      return CupertinoPageScaffold(
+        navigationBar: CupertinoNavigationBar.large(largeTitle: Text("Test")),
+        child: Text("test"),
+      );
+    }
+
+    return Container();
+  }
+}
+
+class CustomNavigationRail extends StatelessWidget {
+  const CustomNavigationRail({super.key, required this.widget});
+
+  final MyHomePage widget;
+
+  @override
+  Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        return Scaffold(
-          body: Row(
-            children: [
-              SafeArea(
-                child: NavigationRail(
-                  extended: constraints.maxWidth >= 600,
-                  destinations: [
-                    NavigationRailDestination(
-                      icon: GestureDetector(
-                        child: Icon(Icons.home),
-                        onTap: () => context.go("/"),
-                      ),
-                      label: Text('Home'),
+        return Row(
+          children: [
+            SafeArea(
+              child: NavigationRail(
+                extended: constraints.maxWidth >= 600,
+                destinations: [
+                  NavigationRailDestination(
+                    icon: GestureDetector(
+                      child: Icon(Icons.home),
+                      onTap: () => context.go("/"),
                     ),
-                    NavigationRailDestination(
-                      icon: GestureDetector(
-                        child: Icon(Icons.favorite),
-                        onTap: () => context.go("/favorites"),
-                      ),
-                      label: Text('Favorites'),
+                    label: Text('Home'),
+                  ),
+                  NavigationRailDestination(
+                    icon: GestureDetector(
+                      child: Icon(Icons.favorite),
+                      onTap: () => context.go("/favorites"),
                     ),
-                  ],
-                  selectedIndex: null,
-                ),
+                    label: Text('Favorites'),
+                  ),
+                ],
+                selectedIndex: null,
               ),
-              Expanded(
-                child: Container(
-                  color: Theme.of(context).colorScheme.primaryContainer,
-                  child: widget.child,
-                ),
+            ),
+            Expanded(
+              child: Container(
+                color: Theme.of(context).colorScheme.primaryContainer,
+                child: widget.child,
               ),
-            ],
-          ),
+            ),
+          ],
         );
       },
     );
