@@ -1,13 +1,19 @@
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:go_router/go_router.dart';
 import 'package:moviematch/providers/app_state.dart';
 import 'package:provider/provider.dart';
 
 Future<void> main() async {
   await dotenv.load(fileName: ".env");
 
-  runApp(MyApp());
+  runApp(
+    MultiProvider(
+      providers: [ChangeNotifierProvider(create: (_) => MyAppState())],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -15,30 +21,47 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => MyAppState(),
-      child: MaterialApp(
-        title: 'Namer App',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrange),
+    return MaterialApp.router(
+      title: 'MovieMatch',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color.fromARGB(255, 99, 0, 156),
         ),
-        home: MyHomePage(),
+      ),
+      routerConfig: GoRouter(
+        routes: [
+          GoRoute(
+            path: "/",
+            builder: (context, state) {
+              return MyHomePage(GeneratorPage());
+            },
+          ),
+          GoRoute(
+            path: "/favorites",
+            builder: (context, state) {
+              return MyHomePage(FavoritesPage());
+            },
+          ),
+        ],
       ),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
+  // class _MyHomePageState extends State<MyHomePage>... has now widget.child
+  final Widget? child;
+
+  const MyHomePage(this.child);
+
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  var selectedIndex = 0;
-
   @override
   Widget build(BuildContext context) {
-    Widget page;
+    /*     Widget page;
     switch (selectedIndex) {
       case 0:
         page = GeneratorPage();
@@ -47,7 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
       default:
         throw UnimplementedError('no widget for $selectedIndex');
     }
-
+ */
     return LayoutBuilder(
       builder: (context, constraints) {
         return Scaffold(
@@ -58,26 +81,27 @@ class _MyHomePageState extends State<MyHomePage> {
                   extended: constraints.maxWidth >= 600,
                   destinations: [
                     NavigationRailDestination(
-                      icon: Icon(Icons.home),
+                      icon: GestureDetector(
+                        child: Icon(Icons.home),
+                        onTap: () => context.go("/"),
+                      ),
                       label: Text('Home'),
                     ),
                     NavigationRailDestination(
-                      icon: Icon(Icons.favorite),
+                      icon: GestureDetector(
+                        child: Icon(Icons.favorite),
+                        onTap: () => context.go("/favorites"),
+                      ),
                       label: Text('Favorites'),
                     ),
                   ],
-                  selectedIndex: selectedIndex,
-                  onDestinationSelected: (value) {
-                    setState(() {
-                      selectedIndex = value;
-                    });
-                  },
+                  selectedIndex: null,
                 ),
               ),
               Expanded(
                 child: Container(
                   color: Theme.of(context).colorScheme.primaryContainer,
-                  child: page,
+                  child: widget.child,
                 ),
               ),
             ],
