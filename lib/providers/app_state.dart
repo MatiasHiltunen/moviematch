@@ -4,8 +4,11 @@ import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'package:moviematch/models/movie.dart';
 
 class MyAppState extends ChangeNotifier {
+  List<Movie> movies = [];
+
   var current = WordPair.random();
   String currentTitle = "Loading...";
   late final String readAccessKey;
@@ -53,14 +56,16 @@ class MyAppState extends ChangeNotifier {
 
     var data = jsonDecode(response.body) as Map<String, dynamic>;
 
-    List movies = data["results"];
+    List moviesJson = data["results"];
 
-    List<String> titles =
+    movies = moviesJson.map((movieJson) => Movie.fromJson(movieJson)).toList();
+
+    /* List<String> titles =
         movies.map((movie) {
           return movie["original_title"] as String;
-        }).toList();
+        }).toList(); */
 
-    currentTitle = titles.first;
+    /* currentTitle = titles.first; */
     notifyListeners();
   }
 
