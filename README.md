@@ -2,6 +2,8 @@
 
 A new Flutter project.
 
+protoc --dart_out=grpc:lib/generated -Iprotos protos/moviematch.proto
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.

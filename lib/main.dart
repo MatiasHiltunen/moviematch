@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:go_router/go_router.dart';
 import 'package:moviematch/providers/app_state.dart';
+import 'package:moviematch/providers/moviematch.dart';
 import 'package:moviematch/views/generator_page.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/cupertino.dart';
@@ -14,7 +15,10 @@ Future<void> main() async {
 
   runApp(
     MultiProvider(
-      providers: [ChangeNotifierProvider(create: (_) => MyAppState())],
+      providers: [
+        ChangeNotifierProvider(create: (_) => MyAppState()),
+        ChangeNotifierProvider(create: (_) => MovieMatchProvider()),
+      ],
       child: MyApp(),
     ),
   );

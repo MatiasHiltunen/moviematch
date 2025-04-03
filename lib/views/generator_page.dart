@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:moviematch/main.dart';
 import 'package:moviematch/models/movie.dart';
 import 'package:moviematch/providers/app_state.dart';
+import 'package:moviematch/providers/moviematch.dart';
 import 'package:provider/provider.dart';
 
 class GeneratorPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
+    var movieMatch = context.read<MovieMatchProvider>();
 
     List<Movie> movies = appState.movies;
     /*    var pair = appState.current; */
@@ -25,6 +27,10 @@ class GeneratorPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           /*   Text(currentTitle), */
+          TextButton(
+            onPressed: () => movieMatch.send(),
+            child: Text("Test gRPC"),
+          ),
           TextButton(
             onPressed: () => appState.getPopularMovies(),
             child: Text("Get popular movies"),
