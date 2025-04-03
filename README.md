@@ -1,18 +1,15 @@
-# moviematch
+# MovieMatch
 
-A new Flutter project.
+
+## Generate proto
 
 protoc --dart_out=grpc:lib/generated -Iprotos protos/moviematch.proto
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+Clone and start server: https://github.com/MatiasHiltunen/moviematch_server
 
-A few resources to get you started if this is your first Flutter project:
+- After server is running, you can start the app, for example with flutter run
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- Project assumes that you are using android emulator and has included the emulator localhost proxy to /lib/providers/moviematch.dart: 10.0.2.2. If you are not using Android emulator, replace that with localhost
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
