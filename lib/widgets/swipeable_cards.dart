@@ -14,7 +14,7 @@ class SwipeableCards extends StatelessWidget {
     /*     var appState = context.watch<MyAppState>();
 
     var movies = appState.movies; */
-    //var movieMatch = context.read<MovieMatchProvider>();
+    var movieMatch = context.read<MovieMatchProvider>();
 
     if (movies.isEmpty) {
       return Text("No movies available");
@@ -36,8 +36,17 @@ class SwipeableCards extends StatelessWidget {
         onSwipe: (oldIndex, currentIndex, direction) async {
           print("$oldIndex $currentIndex $direction");
 
+          if (direction == CardSwiperDirection.right) {
+            movieMatch.send(movies[oldIndex].originalTitle);
+          }
+
           return true;
         },
+        isLoop: false,
+        allowedSwipeDirection: AllowedSwipeDirection.only(
+          left: true,
+          right: true,
+        ),
       ),
     );
   }

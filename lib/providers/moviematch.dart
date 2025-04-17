@@ -3,6 +3,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 import 'package:grpc/grpc.dart';
 
@@ -13,6 +14,7 @@ class MovieMatchProvider extends ChangeNotifier {
   late final MovieMatchClient _stub;
   late final StreamController<StateMessage> _send;
   late final ResponseStream<StateMessage> _receive;
+  String userName = WordPair.random().join();
 
   MovieMatchProvider() {
     var isAndroid = Platform.isAndroid;
@@ -34,11 +36,16 @@ class MovieMatchProvider extends ChangeNotifier {
     });
   }
 
-  void send() {
+  void setUserName(String name) {
+    userName = name;
+    notifyListeners();
+  }
+
+  void send(movieName) {
     var msg =
         StateMessage()
-          ..data = "test"
-          ..user = "client";
+          ..data = movieName
+          ..user = userName;
 
     _send.add(msg);
   }
