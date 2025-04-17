@@ -10,9 +10,10 @@ class GeneratorPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
-    var movieMatch = context.read<MovieMatchProvider>();
+    // Moved to swipeable_cards
+    /* var movieMatch = context.read<MovieMatchProvider>(); */
 
-    List<Movie> movies = appState.movies;
+    /* List<Movie> movies = appState.movies; */
     /*    var pair = appState.current; */
     /* String currentTitle = appState.currentTitle; */
 
@@ -28,15 +29,37 @@ class GeneratorPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           /*   Text(currentTitle), */
-          TextButton(
+          /*           TextButton(
             onPressed: () => movieMatch.send(),
             child: Text("Test gRPC"),
-          ),
-          TextButton(
+          ), */
+
+          /*       TextButton(
             onPressed: () => appState.getPopularMovies(),
             child: Text("Get popular movies"),
+          ), */
+          FutureBuilder<List<Movie>>(
+            future: appState.getPopularMovies(),
+            /*   future: () async {
+              await appState.getPopularMovies();
+              return appState.movies;
+            }, */
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return CircularProgressIndicator();
+              }
+
+              if (snapshot.connectionState == ConnectionState.done &&
+                  !snapshot.hasError &&
+                  snapshot.hasData) {
+                /* appState.movies = snapshot.data!; */
+
+                return SwipeableCards(snapshot.data!);
+              }
+
+              return Text("No movies at this time :(");
+            },
           ),
-          SizedBox(height: 400, child: SwipeableCards()),
 
           /*           SizedBox(
             height: 300,

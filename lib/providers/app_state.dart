@@ -42,7 +42,7 @@ class MyAppState extends ChangeNotifier {
   }
 
   // Add import to top of the file: import 'package:http/http.dart' as http;
-  Future<void> getPopularMovies() async {
+  Future<List<Movie>> getPopularMovies() async {
     final Uri url = Uri.parse("https://api.themoviedb.org/3/movie/popular");
 
     var response = await http.get(
@@ -58,7 +58,7 @@ class MyAppState extends ChangeNotifier {
 
     List moviesJson = data["results"];
 
-    movies = moviesJson.map((movieJson) => Movie.fromJson(movieJson)).toList();
+    return moviesJson.map((movieJson) => Movie.fromJson(movieJson)).toList();
 
     /* List<String> titles =
         movies.map((movie) {
@@ -66,7 +66,7 @@ class MyAppState extends ChangeNotifier {
         }).toList(); */
 
     /* currentTitle = titles.first; */
-    notifyListeners();
+    /* notifyListeners(); */
   }
 
   /* 

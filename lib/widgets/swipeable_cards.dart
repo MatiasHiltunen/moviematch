@@ -1,33 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:provider/provider.dart';
-
-import '../providers/app_state.dart';
+import '../models/movie.dart';
+import '../providers/moviematch.dart';
 
 class SwipeableCards extends StatelessWidget {
-  List<Widget> cards = [
-    Container(
-      alignment: Alignment.center,
-      color: Colors.cyanAccent,
-      child: Text("first"),
-    ),
-    Container(
-      alignment: Alignment.center,
-      color: Colors.redAccent,
-      child: Text("second"),
-    ),
-    Container(
-      alignment: Alignment.center,
-      color: Colors.amberAccent,
-      child: Text("third"),
-    ),
-  ];
+  final List<Movie> movies;
+
+  SwipeableCards(this.movies);
 
   @override
   Widget build(BuildContext context) {
-    var appState = context.watch<MyAppState>();
+    /*     var appState = context.watch<MyAppState>();
 
-    var movies = appState.movies;
+    var movies = appState.movies; */
+    //var movieMatch = context.read<MovieMatchProvider>();
 
     if (movies.isEmpty) {
       return Text("No movies available");
@@ -46,6 +33,11 @@ class SwipeableCards extends StatelessWidget {
           );
         },
         cardsCount: movies.length,
+        onSwipe: (oldIndex, currentIndex, direction) async {
+          print("$oldIndex $currentIndex $direction");
+
+          return true;
+        },
       ),
     );
   }
