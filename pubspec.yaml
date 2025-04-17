@@ -19,6 +19,7 @@ dependencies:
   go_router: ^14.8.1
   grpc: ^4.0.3
   protobuf: ^4.0.0
+  flutter_card_swiper: ^7.0.2
 
 dev_dependencies:
   flutter_test:

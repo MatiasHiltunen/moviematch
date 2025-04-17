@@ -3,6 +3,7 @@ import 'package:moviematch/main.dart';
 import 'package:moviematch/models/movie.dart';
 import 'package:moviematch/providers/app_state.dart';
 import 'package:moviematch/providers/moviematch.dart';
+import 'package:moviematch/widgets/swipeable_cards.dart';
 import 'package:provider/provider.dart';
 
 class GeneratorPage extends StatelessWidget {
@@ -35,7 +36,9 @@ class GeneratorPage extends StatelessWidget {
             onPressed: () => appState.getPopularMovies(),
             child: Text("Get popular movies"),
           ),
-          SizedBox(
+          SizedBox(height: 400, child: SwipeableCards()),
+
+          /*           SizedBox(
             height: 300,
             child: ListView.builder(
               itemBuilder: (context, index) {
@@ -49,7 +52,7 @@ class GeneratorPage extends StatelessWidget {
               },
               itemCount: movies.length,
             ),
-          ),
+          ), */
           /*  BigCard(pair: pair), */
           /*  SizedBox(height: 10),
           Row(
